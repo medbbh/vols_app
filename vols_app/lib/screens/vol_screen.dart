@@ -9,10 +9,12 @@ import 'package:vols_app/controllers/vols_controller.dart';
 import 'package:vols_app/models/vols_model.dart';
 import 'package:vols_app/screens/login_screen.dart';
 import 'package:vols_app/screens/register_screen.dart';
+import 'package:vols_app/screens/vols_result_screen.dart';
 import 'package:vols_app/widget/my_button.dart';
 
 import '../widget/dropdown_button.dart';
 import '../widget/vol_text_field.dart';
+import 'vols_search_not_found.dart';
 
 class VolScreen extends StatefulWidget {
   const VolScreen({Key? key}) : super(key: key);
@@ -51,15 +53,16 @@ class _VolScreenState extends State<VolScreen> {
     try {
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
       QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          (await firebaseFirestore
-                  .collection('vols')
-                  .where('from', isEqualTo: from)
-                  .where('to', isEqualTo: to)
-                  .where('date', isEqualTo: date)
-                  .where('type', isEqualTo: type)
-                  .where('passangers', isEqualTo: passangers)
-                  .where('classe', isEqualTo: classe))
-              as QuerySnapshot<Map<String, dynamic>>;
+          await firebaseFirestore
+              .collection('vols')
+              .where('from', isEqualTo: from)
+              .where('to', isEqualTo: to)
+              .where('date', isEqualTo: date)
+              .where('type', isEqualTo: type)
+              .where('passangers', isEqualTo: passangers)
+              .where('classe', isEqualTo: classe)
+              .get();
+
       for (QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot
           in querySnapshot.docs) {
         Map<String, dynamic> data = documentSnapshot.data();
@@ -78,9 +81,9 @@ class _VolScreenState extends State<VolScreen> {
       // ignore: use_build_context_synchronously
       Navigator.push(context, MaterialPageRoute(builder: (context) {
         if (_volsController.vols.isNotEmpty) {
-          return LoginScreen();
+          return VolsSearchScreen(vol:_volsController.vols.first);
         } else {
-          return SignUpScreen();
+          return VolsSearchNotFound(vol:_volsController.vols.first);
         }
       }));
     } catch (e) {
