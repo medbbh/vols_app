@@ -45,45 +45,46 @@ class _VolScreenState extends State<VolScreen> {
     _classe = value;
   }
 
-  Future<void> searchVols(String from, String to, DateTime date, String type,
-      String passangers, String classe) async {
+  Future<void> searchVols(
+      String from, String to, String type, String classe) async {
     final VolsController _volsController = Get.find<VolsController>();
     _volsController.setIsLoading(true);
 
     try {
       FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-      QuerySnapshot<Map<String, dynamic>> querySnapshot =
-          await firebaseFirestore
-              .collection('vols')
-              .where('from', isEqualTo: from)
-              .where('to', isEqualTo: to)
-              .where('date', isEqualTo: date)
-              .where('type', isEqualTo: type)
-              .where('passangers', isEqualTo: passangers)
-              .where('classe', isEqualTo: classe)
-              .get();
+      QuerySnapshot querySnapshot = await firebaseFirestore
+          .collection('vols')
+          .where('from', isEqualTo: from)
+          .where('to', isEqualTo: to)
+          .where('type', isEqualTo: type)
+          .where('classe', isEqualTo: classe)
+          .get();
 
-      for (QueryDocumentSnapshot<Map<String, dynamic>> documentSnapshot
-          in querySnapshot.docs) {
-        Map<String, dynamic> data = documentSnapshot.data();
+      for (QueryDocumentSnapshot documentSnapshot in querySnapshot.docs) {
+        Map<String, dynamic> data =
+            documentSnapshot.data() as Map<String, dynamic>;
 
         Vols vol = Vols(
-            from: data['from'] ?? '',
-            to: data['to'] ?? '',
-            date: data['date'] ?? '',
-            type: data['type'] ?? '',
-            passangers: data['passangers'] ?? '',
-            classe: data['classe'] ?? '');
+          from: data['from'] ?? '',
+          to: data['to'] ?? '',
+          date: data['date'] ?? '',
+          type: data['type'] ?? '',
+          passangers: data['passangers'] ?? '',
+          classe: data['classe'] ?? '',
+        );
         _volsController.addVols(vol);
       }
-      ;
 
       // ignore: use_build_context_synchronously
       Navigator.push(context, MaterialPageRoute(builder: (context) {
-        if (_volsController.vols.isNotEmpty) {
-          return VolsSearchScreen(vol:_volsController.vols.first);
+        if (_volsController.vols.length > 0) {
+          return VolsSearchScreen(
+            vol: _volsController.vols.first,
+          ); // Replace with the correct screen
         } else {
-          return VolsSearchNotFound(vol:_volsController.vols.first);
+          return VolsSearchNotFound(
+            vol: _volsController.vols.first,
+          ); // Replace with the correct screen
         }
       }));
     } catch (e) {
@@ -183,10 +184,10 @@ class _VolScreenState extends State<VolScreen> {
         color: AppConstants.primaryColor,
         onPressed: () {
           if (_date != null && _type != null && _classe != null) {
-            searchVols(_from.text, _to.text, _date!, _type!, _passangers.text,
-                _classe!);
+            searchVols(_from.text, _to.text, _type!, _classe!);
+            
           } else {
-            print("wrong");
+            print("************** Empty Field **********");
           }
         },
       )

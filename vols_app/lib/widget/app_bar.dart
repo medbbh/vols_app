@@ -26,13 +26,7 @@ class _MyAppBarState extends State<MyAppBar> {
               child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              const Text(
-                'Choisissez',
-                style: TextStyle(color: Colors.white, fontSize: 25),
-              ),
-              const SizedBox(
-                width: 10,
-              ),
+             
               Text(
                 widget.text!,
                 style: const TextStyle(

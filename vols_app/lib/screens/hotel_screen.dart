@@ -16,7 +16,7 @@ class _HotelScreenState extends State<HotelScreen> {
       alignment: Alignment.center,
       margin: EdgeInsets.only(bottom: fullHeight(context) * 0.2),
       child: const Text(
-        "Liste d'hotels",
+        "Choisissez Liste d'hotels",
         style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
       ),
     );

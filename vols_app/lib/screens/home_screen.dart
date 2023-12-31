@@ -25,7 +25,7 @@ class HomeScreen extends StatelessWidget {
           preferredSize: const Size.fromHeight(kToolbarHeight * 4.5),
           child: AppBar(
             titleSpacing: 0,
-            flexibleSpace: const MyAppBar(text: 'Votre voyage'),
+            flexibleSpace: const MyAppBar(text: 'Choisissez Votre voyage'),
             bottom: TabBar(
               indicator: const UnderlineTabIndicator(
                   borderRadius: BorderRadius.all(Radius.circular(5)),
